@@ -128,7 +128,7 @@ def hexadecimal():
 # Logic
 def logic():
     select = input('Select your output : ')
-    print('-----------------------------')
+    seperator()
     functions = {
         '1': decimal,
         '2': binary,
