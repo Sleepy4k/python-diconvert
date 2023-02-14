@@ -1,66 +1,72 @@
 # Import Modules
 import os
+from enum import Enum
+
+# Class
+class Base(Enum):
+    DECIMAL = 1
+    BINARY = 2
+    OCTAL = 3
+    HEXADECIMAL = 4
 
 # Clear Command
 def clear_cmd():
-    os.system('cls') if os.name == 'nt' else os.system('clear')
+    os.system("cls") if os.name == "nt" else os.system("clear")
 
-# Seperator
-def seperator():
+# separator
+def separator():
     print("-" * 30)
 
 # Title
 def title():
     clear_cmd()
-    seperator()
+    separator()
     print("Number Convertion with Python")
-    seperator()
+    separator()
 
 # Menu
 def menu():
     title()
-    print("1. Decimal")
-    print("2. Binary")
-    print("3. Octal")
-    print("4. Hexadecimal")
-    print("5. Exit")
-    seperator()
+    for base in Base:
+        print(f"{base.value}. {base.name}")
+    print(f"{len(Base)+1}. Exit")
+    separator()
 
 # Get Input
 def get_input(base):
     title()
-    data = input(f"Input your {base} number : ")
+    data = input(f"Input your {base.name.lower()} number : ")
     if not data:
-        raise ValueError(f"{base} number is required")
+        raise ValueError(f"{base.name.lower()} number is required")
     return data
 
 # Error
 def error(err):
-    seperator()
+    separator()
     print(err)
-    seperator()
+    separator()
     choice = input("Do you want to continue? [yes/no] : ")
-    init() if choice.lower() in ["yes", "y"] else exit()
+    logic() if choice.lower() in ["yes", "y"] else exit()
 
 # Convertion
 def convertion(base, data):
     try:
-        if base == 1:
+        if base == Base.DECIMAL:
             decimal = int(data)
             binary = bin(decimal)[2:]
             octal = oct(decimal)[2:]
             hexadecimal = hex(decimal)[2:]
-        elif base == 2:
+        elif base == Base.BINARY:
             decimal = int(data, 2)
             binary = data
             octal = oct(decimal)[2:]
             hexadecimal = hex(decimal)[2:]
-        elif base == 3:
+        elif base == Base.OCTAL:
             decimal = int(data, 8)
             binary = bin(decimal)[2:]
             octal = data
             hexadecimal = hex(decimal)[2:]
-        elif base == 4:
+        elif base == Base.HEXADECIMAL:
             decimal = int(data, 16)
             binary = bin(decimal)[2:]
             octal = oct(decimal)[2:]
@@ -74,75 +80,43 @@ def convertion(base, data):
         error(f"System error: {err}")
 
 # Confirmation
-def confirmation(func):
+def confirmation(base):
     choice = input("Do you want to try again? [yes/no] : ")
-    seperator()
+    separator()
     if choice.lower() in ["yes", "y"]:
-        functions = {
-            'decimal': decimal,
-            'binary': binary,
-            'octal': octal,
-            'hexadecimal': hexadecimal,
-        }
-        function = functions.get(func, error)
-        function()
+        main(base)
     elif choice.lower() in ["no", "n"]:
-        init()
+        logic()
     else:
-        error("Invalid choice")
+        print("Invalid choice")
 
 # Result
 def result(decimal, binary, octal, hexadecimal):
-    seperator()
+    separator()
     print(f"Decimal     : {decimal}")
     print(f"Binary      : {binary}")
     print(f"Octal       : {octal}")
     print(f"Hexadecimal : {hexadecimal}")
-    seperator()
+    separator()
 
 # Main
-def decimal():
-    data = get_input("decimal")
-    decimal, binary, octal, hexadecimal = convertion(1, data)
+def main(base):
+    data = get_input(base)
+    decimal, binary, octal, hexadecimal = convertion(base, data)
     result(decimal, binary, octal, hexadecimal)
-    confirmation("decimal")
-
-def binary():
-    data = get_input("binary")
-    decimal, binary, octal, hexadecimal = convertion(2, data)
-    result(decimal, binary, octal, hexadecimal)
-    confirmation("binary")
-
-def octal():
-    data = get_input("octal")
-    decimal, binary, octal, hexadecimal = convertion(3, data)
-    result(decimal, binary, octal, hexadecimal)
-    confirmation("octal")
-
-def hexadecimal():
-    data = get_input("hexadecimal")
-    decimal, binary, octal, hexadecimal = convertion(4, data)
-    result(decimal, binary, octal, hexadecimal)
-    confirmation("hexadecimal")
+    confirmation(base)
 
 # Logic
 def logic():
-    select = input('Select your output : ')
-    seperator()
-    functions = {
-        '1': decimal,
-        '2': binary,
-        '3': octal,
-        '4': hexadecimal,
-        '5': exit
-    }
-    function = functions.get(select, error)
-    function()
-
-# Init
-def init():
     menu()
-    logic()
+    select = input('Select your output : ')
+    separator()
+    if select == str(len(Base)+1):
+        exit()
+    elif select not in [str(base.value) for base in Base]:
+        error("Invalid choice")
+    else:
+        main(Base(int(select)))
 
 # Run
-init()
+logic()
