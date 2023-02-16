@@ -46,31 +46,29 @@ def error(err):
     print(err)
     separator()
     choice = input("Do you want to continue? [yes/no] : ")
-    logic() if choice.lower() in ["yes", "y"] else exit()
+    if choice.lower() in ["yes", "y"]:
+        logic()
+    elif choice.lower() in ["no", "n"]:
+        exit()
+    else:
+        error("Invalid choice")
 
 # Convertion
 def convertion(base, data):
     try:
         if base == Base.DECIMAL:
             decimal = int(data)
-            binary = bin(decimal)[2:]
-            octal = oct(decimal)[2:]
-            hexadecimal = hex(decimal)[2:]
         elif base == Base.BINARY:
             decimal = int(data, 2)
-            binary = data
-            octal = oct(decimal)[2:]
-            hexadecimal = hex(decimal)[2:]
         elif base == Base.OCTAL:
             decimal = int(data, 8)
-            binary = bin(decimal)[2:]
-            octal = data
-            hexadecimal = hex(decimal)[2:]
         elif base == Base.HEXADECIMAL:
             decimal = int(data, 16)
-            binary = bin(decimal)[2:]
-            octal = oct(decimal)[2:]
-            hexadecimal = data
+        else:
+            error("Invalid base")
+        binary = bin(decimal)[2:]
+        octal = oct(decimal)[2:]
+        hexadecimal = hex(decimal)[2:]
         return (decimal, binary, octal, hexadecimal)
     except ValueError:
         error("System has value error")
@@ -88,7 +86,7 @@ def confirmation(base):
     elif choice.lower() in ["no", "n"]:
         logic()
     else:
-        print("Invalid choice")
+        error("Invalid choice")
 
 # Result
 def result(decimal, binary, octal, hexadecimal):
