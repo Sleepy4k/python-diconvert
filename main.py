@@ -8,6 +8,7 @@ class Base(Enum):
     BINARY = 2
     OCTAL = 3
     HEXADECIMAL = 4
+    ASCII = 5
 
 # Clear Command
 def clear_cmd():
@@ -56,20 +57,32 @@ def error(err):
 # Convertion
 def convertion(base, data):
     try:
-        if base == Base.DECIMAL:
-            decimal = int(data)
-        elif base == Base.BINARY:
-            decimal = int(data, 2)
-        elif base == Base.OCTAL:
-            decimal = int(data, 8)
-        elif base == Base.HEXADECIMAL:
-            decimal = int(data, 16)
-        else:
-            error("Invalid base")
+        match base:
+            case Base.DECIMAL:
+                decimal = int(data)
+            case Base.BINARY:
+                decimal = int(data, 2)
+            case Base.OCTAL:
+                decimal = int(data, 8)
+            case Base.HEXADECIMAL:
+                decimal = int(data, 16)
+            case Base.ASCII:
+                decimal = [ord(character) for character in data]
+                binary = ''.join([bin(character)[2:] for character in decimal])
+                octal = ''.join([oct(character)[2:] for character in decimal])
+                hexadecimal = ''.join([hex(character)[2:] for character in decimal])
+                asci = ''.join([chr(character) for character in decimal])
+
+                # Convert to string
+                decimal = ''.join([str(character) for character in decimal])
+                return (decimal, binary, octal, hexadecimal, asci)
+            case _:
+                error("Invalid base")
         binary = bin(decimal)[2:]
         octal = oct(decimal)[2:]
         hexadecimal = hex(decimal)[2:]
-        return (decimal, binary, octal, hexadecimal)
+        asci = chr(decimal)
+        return (decimal, binary, octal, hexadecimal, asci)
     except ValueError:
         error("System has value error")
     except TypeError:
@@ -89,19 +102,20 @@ def confirmation(base):
         error("Invalid choice")
 
 # Result
-def result(decimal, binary, octal, hexadecimal):
+def result(decimal, binary, octal, hexadecimal, asci):
     separator()
     print(f"Decimal     : {decimal}")
     print(f"Binary      : {binary}")
     print(f"Octal       : {octal}")
     print(f"Hexadecimal : {hexadecimal}")
+    print(f"ASCII       : {asci}")
     separator()
 
 # Main
 def main(base):
     data = get_input(base)
-    decimal, binary, octal, hexadecimal = convertion(base, data)
-    result(decimal, binary, octal, hexadecimal)
+    decimal, binary, octal, hexadecimal, asci = convertion(base, data)
+    result(decimal, binary, octal, hexadecimal, asci)
     confirmation(base)
 
 # Logic
