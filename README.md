@@ -8,7 +8,7 @@
 
 ### Kebutuhan System
 
--   Python >= 3.1
+    Python >= 3.1
 
 ### Instalasi
 
@@ -28,7 +28,7 @@ Jalankan file main.py
 
 ### Dependencies
 
--   Python >= 3.1
+    Python >= 3.1
 
 ### Instalation
 
