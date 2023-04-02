@@ -38,10 +38,15 @@ class GUI:
 
         self.window.mainloop()
 
+    # Handle the dropdown form
+    # @param event: Void
+    # @return: None
     def handle_type(self, event):
         unit = event.widget.get()
         self.type.set(unit)
 
+    #  Handle the submit button
+    # @return: Messagebox
     def handle_submit(self):
         unit = self.type.get()
         label = self.value.get()
@@ -55,7 +60,7 @@ class GUI:
         else:
             try:
                 convert = self.logic(unit, label)
-                self.resukt = convert
+                self.result = convert
                 self.form()
                 return messagebox.showinfo("Success", "Successfully converted")
             except ValueError as err:
@@ -66,6 +71,8 @@ class GUI:
                 return messagebox.showerror("Error", err)
 
 
+    # Create the main window
+    # @return: None
     def create(self):
         main = tk.Label(self.window, text=self.translate['sub_title'], bg="peach puff2")
         main['font'] = self.font3
@@ -93,6 +100,8 @@ class GUI:
         get_answer.place(relx='0.46', rely='0.35')
 
 
+    # Create the result window
+    # @return: None
     def form(self):
         result1_label = tk.Label(self.window, text="Decimal -:", bg="peach puff2")
         result1_label['font'] = self.font1

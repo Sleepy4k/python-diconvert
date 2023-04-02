@@ -14,6 +14,7 @@ class Converter:
         self.base = base
         self.config = config
         self.translate = translate
+
         if self.config["gui"]:
             tkinter.GUI(base, config, translate, self.convertion)
         else:
@@ -43,6 +44,7 @@ class Converter:
                 decimal = ' '.join([str(character) for character in decimal])
 
                 return [decimal, binary, octal, hexadecimal, asci]
+
         binary = bin(decimal)[2:]
         octal = oct(decimal)[2:]
         hexadecimal = hex(decimal)[2:]
