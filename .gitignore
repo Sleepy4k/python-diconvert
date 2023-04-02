@@ -1,7 +1,9 @@
 *
+!gui.py
 !main.py
 !logic.py
 !README.md
+!console.py
 !.gitignore
 !.editorconfig
 !.gitattributes

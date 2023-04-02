@@ -20,6 +20,10 @@ Jalankan file main.py
 
     python main.py
 
+### Catatan
+
+    Dalam system ini terdapat 2 bentuk User Interface (UI) yaitu dalam bentuk console dan tkinter
+
 ## EN
 
 ### Understanding
@@ -39,3 +43,7 @@ Make sure you have installed Python with version >= 3.1
 Run the main.py file
 
     python main.py
+
+### Note
+
+    In this system there are 2 forms of User Interface (UI), namely in the form of console and tkinter

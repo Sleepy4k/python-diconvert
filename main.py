@@ -14,7 +14,10 @@ class Base(Enum):
 
 # Application configuration.
 CONFIG = {
-    "separator": 40,
+    "gui": True,
+    "cmd_separator": 40,
+    "gui_size": (500, 600),
+    "gui_resizable": False,
 }
 
 # Application translation.
@@ -29,6 +32,7 @@ TRANSLATE = {
     "required": "{} number is required",
     "continue": "Do you want to continue? [yes/no] : ",
     "separator": "-",
+    "sub_title": "Number Convertion",
     "invalid_choice": "Invalid choice",
 }
 
