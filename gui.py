@@ -8,16 +8,16 @@ from tkinter import messagebox
 
 
 class GUI:
-    _result = []
-    _type = None
-    __base = None
-    _logic = None
-    _font1 = None
-    _font2 = None
-    _font3 = None
-    _value = None
-    _translate = {}
-    __window = None
+    _result = []  # Protected Variable
+    _type = None  # Protected Variable
+    __base = None  # Private Variable
+    _logic = None  # Protected Variable
+    _font1 = None  # Protected Variable
+    _font2 = None  # Protected Variable
+    _font3 = None  # Protected Variable
+    _value = None  # Protected Variable
+    _translate = {}  # Protected Variable
+    __window = None  # Private Variable
 
     # Base constructor
     # @param base: Enum
