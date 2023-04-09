@@ -1,139 +1,158 @@
 # Author: @sleepy4k
 # License: MIT License
-# Description: A simple number convertion application with Python.
+# Description: A simple number conversion application with Python.
 import os
 
+
 class Console:
-    # Base contructor
+    __base = None  # Private Variable
+    _config = {}  # Protected Variable
+    _logic = None  # Protected Variable
+    _translate = {}  # Protected Variable
+
+    # Base constructor
     # @param base: Enum
     # @param config: Array
     # @param translate: Array
     # @param logic: Function
     def __init__(self, base, config, translate, logic):
-        self.base = base
-        self.logic = logic
-        self.config = config
-        self.translate = translate
+        self.__base = base
+        self._logic = logic
+        self._config = config
+        self._translate = translate
 
-        self.create()
+        self.__create()
 
     # Clears the command prompt.
     # @param os_name: String
     # @return: None
-    def clear_cmd(self, os_name):
+    def __clear_cmd(self, os_name):
         os_name = os_name.lower()
+
         if os_name == "nt":
             os.system("cls")
         elif os_name == "posix":
             os.system("clear")
         else:
-            print(self.translate["unknown"])
+            print(self._translate["unknown"])
 
     # Prints a separator line.
     # @return: None
-    def separator(self):
-        print(self.translate["separator"] * self.config["cmd_separator"])
+    def __separator(self):
+        print(self._translate["separator"] * self._config["cmd_separator"])
 
     # Prints the application title.
     # @return: None
-    def title(self):
-        self.clear_cmd(os.name)
-        self.separator()
-        print(self.translate["title"])
-        self.separator()
+    def __title(self):
+        self.__clear_cmd(os.name)
+        self.__separator()
+        print(self._translate["title"])
+        self.__separator()
 
     # Prints the menu options.
     # @return: None
-    def menu(self):
-        self.title()
-        for base in self.base:
+    def __menu(self):
+        self.__title()
+
+        for base in self.__base:
             print(f"{base.value}. {base.name}")
-        print(self.translate["exit"].format(len(self.base) + 1))
-        self.separator()
+
+        print(self._translate["exit"].format(len(self.__base) + 1))
+        self.__separator()
 
     # Prompts the user for input data.
     # @param base: Enum
     # @return: String
-    def get_input(self, base):
-        self.title()
-        data = input(self.translate["input"].format(base.name.lower()))
+    def __get_input(self, base):
+        self.__title()
+        data = input(self._translate["input"].format(base.name.lower()))
+
         if not data:
-            raise ValueError(self.translate["required"].format(base.name.lower()))
+            raise ValueError(self._translate["required"].format(base.name.lower()))
         return data
 
     # Handles errors and prompts the user to continue or exit.
     # @param err: String
     # @return: None
-    def error(self, err):
-        self.separator()
-        print(self.translate["error"].format(err))
-        self.separator()
-        choice = input(self.translate["prompt"])
+    def __error(self, err):
+        self.__separator()
+        print(self._translate["error"].format(err))
+        self.__separator()
+        choice = input(self._translate["prompt"])
         if choice.lower() in ["yes", "y"]:
             return True
         elif choice.lower() in ["no", "n"]:
-            self.create()
+            self.__create()
         else:
-            return self.error(self.translate["invalid_choice"])
+            return self.__error(self._translate["invalid_choice"])
 
     # Converts the input data to decimal and other bases.
     # @param base: Enum
     # @param data: String
     # @return: None
-    def convertion(self, base, data):
+    def __conversion(self, base, data):
         try:
-            return self.logic(base.name, data)
+            return self._logic(base.name, data)
         except ValueError as valErr:
-            self.error(valErr)
+            self.__error(valErr)
         except TypeError as typeErr:
-            self.error(typeErr)
+            self.__error(typeErr)
         except Exception as err:
-            self.error(err)
+            self.__error(err)
 
-        return self.main(base)
+        return self.__main(base)
 
     # Prompts the user to retry or exit.
     # @param base: Enum
     # @return: None
-    def retry(self, base):
-        choice = input(self.translate["continue"])
-        self.separator()
+    def __retry(self, base):
+        choice = input(self._translate["continue"])
+        self.__separator()
         if choice.lower() in ["yes", "y"]:
-            self.main(base)
+            self.__main(base)
         elif choice.lower() in ["no", "n"]:
-            self.create()
+            self.__create()
         else:
-            self.error(self.translate["invalid_choice"])
-            return self.retry(base)
+            self.__error(self._translate["invalid_choice"])
+            return self.__retry(base)
 
     # Main application.
     # @param base: Enum
     # @return: None
-    def main(self, base):
+    def __main(self, base):
         try:
-            data = self.get_input(base)
-            conversions = self.convertion(base, data)
-            self.separator()
-            print(f"Decimal     : {conversions[0]}")
-            print(f"Binary      : {conversions[1]}")
-            print(f"Octal       : {conversions[2]}")
-            print(f"Hexadecimal : {conversions[3]}")
-            print(f"ASCII       : {conversions[4]}")
-            self.separator()
-            self.retry(base)
+            data = self.__get_input(base)
+            conversions = self.__conversion(base, data)
+            self.__separator()
+            enum = [enums.name for enums in self.__base]
+
+            if "DECIMAL" in enum:
+                print(f"Decimal     : {conversions[0]}")
+            if "BINARY" in enum:
+                print(f"Binary      : {conversions[1]}")
+            if "OCTAL" in enum:
+                print(f"Octal       : {conversions[2]}")
+            if "HEXADECIMAL" in enum:
+                print(f"Hexadecimal : {conversions[3]}")
+            if "ASCII" in enum:
+                print(f"ASCII       : {conversions[4]}")
+
+            self.__separator()
+            self.__retry(base)
         except ValueError as err:
-            self.error(err)
-            self.main(base)
+            self.__error(err)
+            self.__main(base)
 
     # Creates the application.
     # @return: None
-    def create(self):
-        self.menu()
-        select = input(self.translate["select"])
-        self.separator()
-        if select == str(len(self.base) + 1):
+    def __create(self):
+        self.__menu()
+        select = input(self._translate["select"])
+        self.__separator()
+
+        if select == str(len(self.__base) + 1):
             exit()
-        elif select not in [str(base.value) for base in self.base]:
-            self.error(self.translate["invalid_choice"])
+        elif select not in [str(base.value) for base in self.__base]:
+            self.__error(self._translate["invalid_choice"])
         else:
-            self.main(self.base(int(select)))
+            self.__main(self.__base(int(select)))
