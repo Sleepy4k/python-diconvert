@@ -1,9 +1,18 @@
-*
-!gui.py
-!main.py
-!logic.py
-!README.md
-!console.py
-!.gitignore
-!.editorconfig
-!.gitattributes
+# Ignore python cache files
+/__pycache__/*
+/**/__pycache__/*
+
+# Ignore python environment
+/venv/*
+/.venv/*
+/.env/*
+
+# Ignore python logs
+/*.log
+/*.log.*
+/*.log-*
+
+# Ignore text editor files
+/.idea/*
+/.vscode/*
+/.sublime-project
