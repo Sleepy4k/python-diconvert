@@ -67,7 +67,7 @@ class CMD:
     self.__title()
 
     for base in self.__base:
-      print(f"{base.value}. {base.name}")
+      print(f"{base.value[0]}. {base.name}")
 
     print(self._translate["exit"].format(len(self.__base) + 1))
     self.__separator()
@@ -151,26 +151,18 @@ class CMD:
       conversions = self.__conversion(base, data)
       self.__separator()
 
-      enum = [enums.value for enums in self.__base]
+      enum = [enums.value[0] for enums in self.__base]
 
-      if 10 in enum:
-        print(f"Decimal     : {conversions[0]}")
-
-      if 2 in enum:
-        print(f"Binary      : {conversions[1]}")
-
-      if 8 in enum:
-        print(f"Octal       : {conversions[2]}")
-
-      if 16 in enum:
-        print(f"Hexadecimal : {conversions[3]}")
-
-      if 256 in enum:
-        print(f"ASCII       : {conversions[4]}")
+      if 1 in enum: print(f"Decimal     : {conversions[0]}")
+      if 2 in enum: print(f"Binary      : {conversions[1]}")
+      if 3 in enum: print(f"Octal       : {conversions[2]}")
+      if 4 in enum: print(f"Hexadecimal : {conversions[3]}")
+      if 5 in enum: print(f"ASCII       : {conversions[4]}")
 
       self.__separator()
       self.__retry(base)
     except ValueError as err:
+      print(err)
       self.__error(err)
 
   def __create(self):
@@ -183,10 +175,13 @@ class CMD:
     select = input(self._translate["select"])
     self.__separator()
 
-    if select == str(len(self.__base) + 1):
+    length = len(self.__base) + 1
+
+    if int(select) == length:
       exit()
-    elif select not in [str(base.value) for base in self.__base]:
+    elif int(select) > 0 and int(select) < length:
+      base = [base for base in self.__base if base.value[0] == int(select)][0]
+      self.__main(base)
+    else:
       status = self.__error(self._translate["invalid_choice"])
       self.__create() if status else exit()
-    else:
-      self.__main(self.__base(int(select)))

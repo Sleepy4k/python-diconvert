@@ -127,7 +127,7 @@ class GUI:
     :return: None
     """
 
-    enum = [enums.value for enums in self.__base]
+    enum = [enums.value[1] for enums in self.__base]
 
     if 10 in enum:
       decimal_label = tk.Label(self.__window, text = "Decimal -:", bg = "peach puff2")
